@@ -2,6 +2,36 @@ syntax = "proto3";
 
 package protos;
 
+message ND {
+  double value = 1;
+}
+
+message CellType {
+  enum DataType {
+    BIT = 0;
+    BYTE = 1;
+    UBYTE = 2;
+    SHORT = 3;
+    USHORT = 4;
+    INT = 5;
+    FLOAT = 6;
+    DOUBLE = 7;
+  }
+
+  DataType dataType = 1;
+  ND nd = 2;
+}
+
+message Tile {
+  int32 cols = 1;
+  int32 rows = 2;
+  CellType cellType = 3;
+  repeated sint32 sint32Cells = 4;  // Int, Short, Byte
+  repeated uint32 uint32_cells = 5; // UShot, UByte, Bit
+  repeated float float_cells = 6;   // Float
+  repeated double double_cells = 7; // Double
+}
+
 message TileInfo {
   string name = 1;
   uint32 cols = 2;

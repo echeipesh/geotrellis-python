@@ -6,9 +6,7 @@ import protos.keyMessages.{SpatialKey => ProtoSpatialKey}
 
 
 trait SpatialKeyProtoBuf {
-  implicit def spatialKeyProtoBufCodec = new ProtoBufCodec[SpatialKey] {
-    type M = ProtoSpatialKey
-
+  implicit def spatialKeyProtoBufCodec = new ProtoBufCodec[SpatialKey, ProtoSpatialKey] {
     def encode(spatialKey: SpatialKey): ProtoSpatialKey =
       ProtoSpatialKey(col = spatialKey.col, row = spatialKey.row)
 
@@ -16,4 +14,3 @@ trait SpatialKeyProtoBuf {
       SpatialKey(message.col, message.row)
   }
 }
-

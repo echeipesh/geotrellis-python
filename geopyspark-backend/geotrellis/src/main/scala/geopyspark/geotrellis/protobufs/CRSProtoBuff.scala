@@ -6,9 +6,7 @@ import geotrellis.proj4._
 
 
 trait CRSProtoBuf {
-  implicit def crsProtoBufCodec = new ProtoBufCodec[CRS] {
-    type M = ProtoCRS
-
+  implicit def crsProtoBufCodec = new ProtoBufCodec[CRS, ProtoCRS] {
     override def encode(thing: CRS): ProtoCRS =
       if (thing.epsgCode.isDefined)
         ProtoCRS(epsg = thing.epsgCode.get)

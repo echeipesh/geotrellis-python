@@ -6,9 +6,7 @@ import protos.keyMessages.{SpaceTimeKey => ProtoSpaceTimeKey}
 
 
 trait SpaceTimeKeyProtoBuf {
-  implicit def spaceTimeKeyProtoBufCodec = new ProtoBufCodec[SpaceTimeKey] {
-    type M = ProtoSpaceTimeKey
-
+  implicit def spaceTimeKeyProtoBufCodec = new ProtoBufCodec[SpaceTimeKey, ProtoSpaceTimeKey] {
     def encode(spaceTimeKey: SpaceTimeKey): ProtoSpaceTimeKey =
       ProtoSpaceTimeKey(col = spaceTimeKey.col, row = spaceTimeKey.row, instant = spaceTimeKey.instant)
 
