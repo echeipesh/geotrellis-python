@@ -29,7 +29,7 @@ from geopyspark.geotrellis.constants import (RESAMPLE_METHODS,
                                             )
 from geopyspark.geotrellis.neighborhoods import Neighborhood
 
-def rasterize(geopysc, geoms, crs, zoom, fill_value, cell_type='float64', options=None):
+def rasterize(geopysc, geoms, crs, zoom, fill_value, cell_type='float64', options=None, numPartitions=None):
     """Rasterizes a Shapely geometries.
 
     Args:
@@ -40,6 +40,7 @@ def rasterize(geopysc, geoms, crs, zoom, fill_value, cell_type='float64', option
         fill_value: Value to burn into pixels intersectiong geometry
         cell_type (str): The string representation of the ``CellType`` to convert to.
         options (:class:`~geopyspark.geotrellis.RasterizerOptions`): Pixel intersection options.
+        numPartitions(int): Number of partitions to use for output RDD.
 
     Returns:
         :class:`~geopyspark.geotrellis.rdd.TiledRasterRDD`
@@ -48,7 +49,9 @@ def rasterize(geopysc, geoms, crs, zoom, fill_value, cell_type='float64', option
         crs = str(crs)
 
     wkb_geoms = [shapely.wkb.dumps(g) for g in geoms]
-    srdd = geopysc._jvm.SpatialTiledRasterRDD.rasterizeGeometry(geopysc.sc, wkb_geoms, crs, zoom, float(fill_value), cell_type, options)
+    srdd = geopysc._jvm.SpatialTiledRasterRDD.rasterizeGeometry(geopysc.sc, wkb_geoms, crs, zoom,
+                                                                float(fill_value), cell_type, options,
+                                                                numPartitions)
     return TiledRasterRDD(geopysc, SPATIAL, srdd)
 
 def _reclassify(srdd, value_map, data_type, boundary_strategy, replace_nodata_with):
